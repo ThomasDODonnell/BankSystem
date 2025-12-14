@@ -62,6 +62,8 @@ CREATE TABLE transaction_categories (
     UNIQUE(transaction_id) -- One category per non-split transaction
 );
 
+-- account
+
 -- Indexes for better query performance
 CREATE INDEX idx_transactions_date ON transactions(date);
 CREATE INDEX idx_transactions_type ON transactions(type);
@@ -79,3 +81,4 @@ INSERT INTO categories (name, description, color) VALUES
 ('Entertainment', 'Movies, games, hobbies', '#9C27B0'),
 ('Utilities', 'Electric, water, internet', '#F44336'),
 ('Income', 'Salary and other income', '#8BC34A');
+
