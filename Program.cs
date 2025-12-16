@@ -10,7 +10,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<BankSystemContext>(options =>
 {
-    options;S
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 }
 );
 
