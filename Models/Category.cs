@@ -16,4 +16,5 @@ public class Category
     public string? Icon {get; set;}
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt{get; set;}
+    public CategoryGoal? CategoryGoal { get; set; }
 }
