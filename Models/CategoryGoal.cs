@@ -18,6 +18,7 @@ public class CategoryGoal
     public DateOnly EndDate {get; set;}
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
+    // Navegation Property
     public Category Category { get; set; } = null!;
 
 }

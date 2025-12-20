@@ -16,6 +16,9 @@ public class Category
     public string? Icon {get; set;}
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt{get; set;}
-    public CategoryGoal? CategoryGoal { get; set; }
-    public TransactionSplit? TransactionSplit { get; set; }
+
+    // Navegation Properties
+    public ICollection<CategoryGoal> Goal { get; set; }
+    public ICollection<TransactionSplit> TransactionSplits { get; set; }
+    public ICollection<TransactionCategory> TransactionCategories { get; set;}
 }
