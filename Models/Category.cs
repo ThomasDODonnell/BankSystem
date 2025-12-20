@@ -17,4 +17,5 @@ public class Category
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt{get; set;}
     public CategoryGoal? CategoryGoal { get; set; }
+    public TransactionSplit? TransactionSplit { get; set; }
 }
