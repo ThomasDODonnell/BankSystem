@@ -12,7 +12,6 @@ public class TransactionCategory
     [Required]
     public int CategoryId {get; set;}
     public DateTime CreatedAt {get; set;}
-    public DateTime UpdatedAt {get; set;}
     // Navigation Properties
     public Transaction Transaction {get; set;}
     public Category Category {get; set;}

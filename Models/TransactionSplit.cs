@@ -16,7 +16,6 @@ public class TransactionSplit
     public decimal Amount {get; set;}
     public string? Notes {get; set;}
     public DateTime CreatedAt {get; set;}
-    public DateTime UpdatedAt {get; set;}
     // Navigation Properties
     public Transaction Transaction {get; set;} = null!;
     public Category Category {get; set;} = null!;
