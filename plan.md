@@ -1,6 +1,6 @@
 The backend classes to implement
 
-- Budgeting App Database Schema
+- Budgeting App Database Schema: https://dbdiagram.io/d/BankSystem-6957ea9739fa3db27bf983cb
 
 -- Categories table for organizing transactions
 CREATE TABLE categories (
