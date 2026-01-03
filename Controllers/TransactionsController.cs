@@ -22,9 +22,13 @@ public class TransactionsController : ControllerBase
     // TODO: Decide which style of implementation is best
     // Do I combine all the functions into the get transaction then filter that way? Or do I have multiple endpoints
     [HttpGet]
-    public async Task<ActionResult> GetTransactions()
+    public async Task<ActionResult> GetTransactions([FromQuery] QueryParameters queryParameters)
     {
-        return Ok(await _context.Transactions.ToArrayAsync());
+        IQueryable<Transaction> transactions = _context.Transactions;
+
+        transactions.Skip(queryParameters.Size * (queryParameters.Page -1)).Take(queryParameters.Size);
+
+        return Ok(await transactions.ToArrayAsync());
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions([FromQuery] string? shop)
