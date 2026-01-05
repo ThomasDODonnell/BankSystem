@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace BankSystem.API.Models;
 
 public class QueryParameters
@@ -11,6 +13,23 @@ public class QueryParameters
         set
         {
             _size = Math.Min(_maxsize, value);
+        }
+    }
+
+    public string SortBy {get; set;} = "CreatedAt";
+    private string _sortOrder = "desc";
+    public string SortOrder
+    {
+        get
+        {
+            return _sortOrder;     
+        }
+        set
+        {
+            if(value == "asc" || value == "desc")
+            {
+                _sortOrder = value;
+            }     
         }
     }
 

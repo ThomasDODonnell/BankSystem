@@ -34,13 +34,20 @@ public class TransactionsController : ControllerBase
         {
             transactions = transactions.Where(t => t.Amount <= queryParameters.MaxPrice.Value);
         }
-        if (queryParameters.Store != null)
+        if (!string.IsNullOrEmpty(queryParameters.Store))
         {
             transactions = transactions.Where(t => t.Store.ToLower().Contains(queryParameters.Store.ToLower()));
         }
+        if (!string.IsNullOrEmpty(queryParameters.SortBy))
+        {
+            if (typeof(Transaction).GetProperty(queryParameters.SortBy) != null)
+            {
+                transactions = transactions.OrderByCustom(queryParameters.SortBy, queryParameters.SortOrder);
+            }
+        }
         if (!transactions.Any())
         {
-            return NotFound($"No transactions found that met your search criteria. MinPrice: {queryParameters.MinPrice}, MaxPrice: {queryParameters.MaxPrice}, Store: {queryParameters.Store}");
+            return NotFound($"No transactions found that met your search criteria. MinPrice: {queryParameters.MinPrice}, MaxPrice: {queryParameters.MaxPrice}, Store: {queryParameters.Store}, SortBy: {queryParameters.SortBy}, OrderBy: {queryParameters.SortOrder}");
         }
 
         transactions.Skip(queryParameters.Size * (queryParameters.Page -1)).Take(queryParameters.Size);
