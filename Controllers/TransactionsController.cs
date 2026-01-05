@@ -22,9 +22,26 @@ public class TransactionsController : ControllerBase
     // TODO: Decide which style of implementation is best
     // Do I combine all the functions into the get transaction then filter that way? Or do I have multiple endpoints
     [HttpGet]
-    public async Task<ActionResult> GetTransactions([FromQuery] QueryParameters queryParameters)
+    public async Task<ActionResult> GetTransactions([FromQuery] TransactionQueryParameters queryParameters)
     {
         IQueryable<Transaction> transactions = _context.Transactions;
+
+        if (queryParameters.MinPrice != null)
+        {
+            transactions = transactions.Where(t => t.Amount >= queryParameters.MinPrice.Value);
+        }
+        if (queryParameters.MaxPrice != null)
+        {
+            transactions = transactions.Where(t => t.Amount <= queryParameters.MaxPrice.Value);
+        }
+        if (queryParameters.Store != null)
+        {
+            transactions = transactions.Where(t => t.Store.Contains(queryParameters.Store));
+        }
+        if (!transactions.Any())
+        {
+            return NotFound($"No transactions found that met your search criteria. MinPrice: {queryParameters.MinPrice}, MaxPrice: {queryParameters.MaxPrice}, Store: {queryParameters.Store}");
+        }
 
         transactions.Skip(queryParameters.Size * (queryParameters.Page -1)).Take(queryParameters.Size);
 
