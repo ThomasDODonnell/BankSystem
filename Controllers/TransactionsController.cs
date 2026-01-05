@@ -36,7 +36,7 @@ public class TransactionsController : ControllerBase
         }
         if (queryParameters.Store != null)
         {
-            transactions = transactions.Where(t => t.Store.Contains(queryParameters.Store));
+            transactions = transactions.Where(t => t.Store.ToLower().Contains(queryParameters.Store.ToLower()));
         }
         if (!transactions.Any())
         {
@@ -47,25 +47,25 @@ public class TransactionsController : ControllerBase
 
         return Ok(await transactions.ToArrayAsync());
     }
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions([FromQuery] string? shop)
-    {
-        var query = _context.Transactions.AsQueryable();
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions([FromQuery] string? shop)
+    // {
+    //     var query = _context.Transactions.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(shop))
-        {
-            query = query.Where(t => t.Store.Contains(shop));
-        }
+    //     if (!string.IsNullOrWhiteSpace(shop))
+    //     {
+    //         query = query.Where(t => t.Store.Contains(shop));
+    //     }
 
-        var results = await query.ToListAsync();
+    //     var results = await query.ToListAsync();
 
-        if (results == null || !results.Any())
-        {
-            return NotFound($"No transactions found for shop: {shop}");
-        }
+    //     if (results == null || !results.Any())
+    //     {
+    //         return NotFound($"No transactions found for shop: {shop}");
+    //     }
 
-        return Ok(results);
-    } 
+    //     return Ok(results);
+    // } 
 
     [HttpGet("{id}")]
     public async Task<ActionResult> GetTransaction(int id)
