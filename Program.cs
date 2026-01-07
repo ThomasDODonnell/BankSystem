@@ -14,6 +14,14 @@ builder.Services.AddDbContext<BankSystemContext>(options =>
 }
 );
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7015", "http://localhost:5234"); // These urls must match whatever the javascript endpoint is, not the api endpoint, so this will need to change
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +33,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
