@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 namespace BankSystem.API.Models;
 public class BankSystemContext: IdentityDbContext<IdentityUser> 
 {
