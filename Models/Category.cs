@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 namespace BankSystem.API.Models;
 
 public class Category
 {
     [Key]
     public int Id {get; set;}
+    [Required]
+    public string UserId {get; set;}
     [MaxLength(100)]
     [Required]
     public string Name {get; set;} = string.Empty;
@@ -21,4 +24,6 @@ public class Category
     public ICollection<CategoryGoal> Goals { get; set; }
     public ICollection<TransactionSplit> TransactionSplits { get; set; }
     public ICollection<TransactionCategory> TransactionCategories { get; set;}
+    [ForeignKey("UserId")]
+    public virtual IdentityUser User {get; set;}
 }

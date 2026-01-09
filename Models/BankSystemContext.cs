@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.API.Models;
-public class BankSystemContext: DbContext
+public class BankSystemContext: IdentityDbContext<IdentityUser> 
 {
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Category> Categories => Set<Category>();

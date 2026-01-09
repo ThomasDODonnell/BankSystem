@@ -3,9 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization; // For [Authorize]
+using System.Security.Claims;             // For User.FindFirstValue
 
 namespace BankSystem.API.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class TransactionsController : ControllerBase
@@ -24,7 +27,8 @@ public class TransactionsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetTransactions([FromQuery] TransactionQueryParameters queryParameters)
     {
-        IQueryable<Transaction> transactions = _context.Transactions;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        IQueryable<Transaction> transactions = _context.Transactions.Where(t => t.UserId == userId);
 
         if (queryParameters.MinPrice != null)
         {
@@ -74,10 +78,12 @@ public class TransactionsController : ControllerBase
     //     return Ok(results);
     // } 
 
+    // Probably add this to the filter
     [HttpGet("{id}")]
     public async Task<ActionResult> GetTransaction(int id)
     {
-        var transaction = await _context.Transactions.FindAsync(id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == t.Id && t.UserId == userId);
         if (transaction == null) 
         {
             return NotFound();
@@ -87,11 +93,13 @@ public class TransactionsController : ControllerBase
 
     // TODO: At some point decide if this will be centered around transactions or around categories, in which case
     // it is probably better to name this something else
+    // Probably add this to the filter
     [HttpGet("{store}")]
     public async Task<ActionResult> GetTransactionsByShop(string store)
     {
-        var transactions = await _context.Transactions.Where(t => EF.Functions.Contains(t.Store, store)).ToListAsync();
-        if (transactions == null)
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var transactions = await _context.Transactions.Where(t => t.UserId == userId && t.Store.Contains(store.ToLower())).ToListAsync();
+        if (!transactions.Any())
         {
             return NotFound();
         }
@@ -103,6 +111,8 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> PostTransaction(Transaction transaction)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        transaction.UserId = userId;
         _context.Transactions.Add(transaction);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetTransaction), new {id = transaction.Id}, transaction);
@@ -118,6 +128,8 @@ public class TransactionsController : ControllerBase
             return BadRequest();
         }
         
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        transaction.UserId = userId;
         _context.Entry(transaction).State = EntityState.Modified;
         
         try
@@ -143,7 +155,8 @@ public class TransactionsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTransaction(int id)
     {
-        var transaction = await _context.Transactions.FindAsync(id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == t.Id && t.UserId == userId);
         if(transaction == null)
         {
             return NotFound();
