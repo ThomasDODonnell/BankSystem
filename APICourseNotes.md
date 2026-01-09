@@ -11,4 +11,10 @@
 * https://youtu.be/eYiLt2gQuME
 
 <h2>Adding Token Auth</h2>
+* JwtBearer packages - json web token
+* added a token controller w/ autherzie wrappers
 
+<h1>REST API Design</h1>
+
+<h2>Overview</h2>
+*
