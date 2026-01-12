@@ -1,4 +1,4 @@
-The backend classes to implement
+<h1>The backend classes to implement</h1>
 
 - Budgeting App Database Schema: https://dbdiagram.io/d/BankSystem-6957ea9739fa3db27bf983cb
 
@@ -82,3 +82,17 @@ INSERT INTO categories (name, description, color) VALUES
 ('Utilities', 'Electric, water, internet', '#F44336'),
 ('Income', 'Salary and other income', '#8BC34A');
 
+
+<h1>Pages/API Endpoints to Build</h1>
+- An upload transactions csv page
+- An add transactions page
+- split and recategorize transactions page
+- Add category and goal
+- categorize transactions page
+- View categories and goal progress
+- Remember store page
+
+<h3>To build after inital functionality</h3>
+- View transactions by store
+- view transactions by amount
+- view all recurring transactions and mark as not recurring

@@ -38,6 +38,20 @@ public class BankSystemContext: IdentityDbContext<IdentityUser>
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        //CategoryMappings
+        modelBuilder.Entity<CategoryMappings>(entity =>
+        {
+            entity.ToTable("category_mappings");
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at").HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            // One-to-One: CategoryMapping -> Category
+            entity.HasOne(e => e.Category)
+                .WithMany()
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         // Transaction Configuration
         modelBuilder.Entity<Transaction>(entity =>
         {

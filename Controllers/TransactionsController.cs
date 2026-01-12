@@ -19,6 +19,8 @@ public class TransactionsController : ControllerBase
     {
         _context = context;
         // await _context.Database.EnsureCreatedAsync();
+        // This is not the proper way to do this apparently 
+        // Apparently I make a scope and use the ensure created command there
         _context.Database.EnsureCreated();
     }
 

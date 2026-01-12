@@ -18,6 +18,8 @@ public class Transaction
         [MaxLength(64)]
         public string Store {get; set;} = string.Empty;
         [Required]
+        public bool IsRecurring {get; set;} = false;
+        [Required]
         [Column(TypeName ="decimal(10, 2)")]
         public decimal Amount {get; set;}
         [Required]
