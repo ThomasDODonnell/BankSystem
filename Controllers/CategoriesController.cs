@@ -27,8 +27,42 @@ public class CategoriesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetCategories([FromQuery] CategoryQueryParameters queryParameters)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        IQueryable<Category> categories = _context.Categories.Where(c => c.UserId == userId);
 
+        if(!string.IsNullOrEmpty(queryParameters.Name))
+        {
+            categories = categories.Where(c => c.Name.ToLower().Contains(queryParameters.Name.ToLower()));
+        }
+        if (!string.IsNullOrEmpty(queryParameters.SortBy))
+        {
+            if (typeof(Category).GetProperty(queryParameters.SortBy) != null)
+            {
+                categories = categories.OrderByCustom(queryParameters.SortBy, queryParameters.SortOrder);
+            }
+        }
+        if (!categories.Any())
+        {
+            return NotFound($"No categories found that met your search criteria. Name: {queryParameters.Name}, SortBy: {queryParameters.SortBy}, OrderBy: {queryParameters.SortOrder}");
+        }
+
+        categories.Skip(queryParameters.Size * (queryParameters.Page -1)).Take(queryParameters.Size);
+
+        return Ok(await categories.ToArrayAsync());
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetCategory(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        if (category == null)
+        {
+            return NotFound();
+        }
+        return Ok(category);
+    }
+
 
     // Post
     [HttpPost]
@@ -38,7 +72,18 @@ public class CategoriesController : ControllerBase
         category.UserId = userId;
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetCategories), new {id = category.id}, category);
+        return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, category);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> PostCategoryWithGoal(Category category, CategoryGoal categoryGoal)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        category.UserId = userId;
+        _context.Categories.Add(category);
+        _
+        await _context.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, category);
     }
 
     // Put

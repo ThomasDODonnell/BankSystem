@@ -85,27 +85,12 @@ public class TransactionsController : ControllerBase
     public async Task<ActionResult> GetTransaction(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == t.Id && t.UserId == userId);
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if (transaction == null) 
         {
             return NotFound();
         }
         return Ok(transaction);
-    }
-
-    // TODO: At some point decide if this will be centered around transactions or around categories, in which case
-    // it is probably better to name this something else
-    // Probably add this to the filter
-    [HttpGet("{store}")]
-    public async Task<ActionResult> GetTransactionsByShop(string store)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var transactions = await _context.Transactions.Where(t => t.UserId == userId && t.Store.Contains(store.ToLower())).ToListAsync();
-        if (!transactions.Any())
-        {
-            return NotFound();
-        }
-        return Ok(transactions);
     }
 
     // Post methods
