@@ -76,16 +76,72 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> PostCategoryWithGoal(Category category, CategoryGoal categoryGoal)
+    public async Task<ActionResult> PostCategoryWithGoal(CategoryWithGoalRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        category.UserId = userId;
+
+        var category = new Category
+        {
+            UserId = userId,
+            Name = request.Name,
+            Color = request.Color,
+            Icon = request.Icon,
+            CategoryGoals = new List<CategoryGoal> 
+            {
+                new CategoryGoal 
+                {
+                    Amount = request.GoalAmount,
+                    Period = request.GoalPeriod,
+                    StartDate = DateOnly.FromDateTime(DateTime.Now) 
+                }
+            }
+        };
+
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, category);
+
+        // Mapping to response (the Goal will now have its ID and CategoryId populated)
+        var response = new CategoryWithGoalResponse
+        {
+            Id = category.Id,
+            Name = category.Name,
+            GoalAmount = category.CategoryGoals.First().Amount,
+            GoalPeriod = category.CategoryGoals.First().Period
+        };
+
+        return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, response);
     }
 
     // Put
+    [HttpPut("{id}")]
+    public async Task<ActionResult> PutCategory(int id, [FromBody] Category category)
+    {
+        if(id != category.Id)
+        {
+            return BadRequest();
+        }
+        
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        category.UserId = userId;
+        _context.Entry(category).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if(!_context.Categories.Any(c => c.Id == id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+        return NoContent();
+    }
 
     // Delete
 }

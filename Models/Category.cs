@@ -21,7 +21,7 @@ public class Category
     public DateTime UpdatedAt{get; set;}
 
     // Navegation Properties
-    public ICollection<CategoryGoal> Goals { get; set; }
+    public ICollection<CategoryGoal> CategoryGoals { get; set; }
     public ICollection<TransactionSplit> TransactionSplits { get; set; }
     public ICollection<TransactionCategory> TransactionCategories { get; set;}
     [ForeignKey("UserId")]
