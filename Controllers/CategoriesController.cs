@@ -114,34 +114,44 @@ public class CategoriesController : ControllerBase
 
     // Put
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutCategory(int id, [FromBody] Category category)
+    public async Task<ActionResult> PutCategory(int id, [FromBody] CategoryUpdate updateDto)
     {
-        if(id != category.Id)
-        {
-            return BadRequest();
-        }
-        
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        category.UserId = userId;
-        _context.Entry(category).State = EntityState.Modified;
 
-        try
+        // 1. Fetch the existing category from the DB
+        var existingCategory = await _context.Categories
+            .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
+        if (existingCategory == null)
         {
-            await _context.SaveChangesAsync();
+            return NotFound("Category not found or you don't have permission.");
         }
-        catch (DbUpdateConcurrencyException)
-        {
-            if(!_context.Categories.Any(c => c.Id == id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+
+        // 2. Only update the fields you want the user to be able to change
+        existingCategory.Name = updateDto.Name;
+        existingCategory.Color = updateDto.Color;
+        existingCategory.Icon = updateDto.Icon;
+        existingCategory.Description = updateDto.Description;
+        existingCategory.UpdatedAt = DateTime.UtcNow; // Manual update timestamp
+
+        // 3. Save changes (EF only updates what actually changed!)
+        await _context.SaveChangesAsync();
+
         return NoContent();
     }
 
     // Delete
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCategory(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        if(category == null)
+        {
+            return NotFound();
+        }
+        _context.Categories.Remove(category);
+        await _context.SaveChangesAsync();
+        return Ok(category);
+    }
 }

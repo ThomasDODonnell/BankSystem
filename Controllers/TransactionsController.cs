@@ -108,33 +108,28 @@ public class TransactionsController : ControllerBase
     // Put Methods
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutTransaction(int id, [FromBody] Transaction transaction)
+    public async Task<ActionResult> PutTransaction(int id, [FromBody] TransactionUpdate transactionUpdate)
     {
-        if(id != transaction.Id)
-        {
-            return BadRequest();
-        }
-        
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        transaction.UserId = userId;
-        _context.Entry(transaction).State = EntityState.Modified;
-        
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch(DbUpdateConcurrencyException)
-        {
-            if(!_context.Transactions.Any(t => t.Id == id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-        return NoContent();
+       var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+       var existingTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+       if (existingTransaction == null)
+       {
+           return NotFound("Transaction not found or you do not have permission");
+       }
+
+       existingTransaction.Date = transactionUpdate.Date;
+       existingTransaction.Description = transactionUpdate.Description;
+       existingTransaction.Store = transactionUpdate.Store;
+       existingTransaction.IsRecurring = transactionUpdate.IsRecurring;
+       existingTransaction.Amount = transactionUpdate.Amount;
+       existingTransaction.Type = transactionUpdate.Type;
+       existingTransaction.IsSplit = transactionUpdate.IsSplit;
+       existingTransaction.Notes = transactionUpdate.Notes;
+
+       await _context.SaveChangesAsync();
+
+       return NoContent();
     }
 
     // Delete Methods
@@ -143,7 +138,7 @@ public class TransactionsController : ControllerBase
     public async Task<ActionResult> DeleteTransaction(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == t.Id && t.UserId == userId);
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if(transaction == null)
         {
             return NotFound();

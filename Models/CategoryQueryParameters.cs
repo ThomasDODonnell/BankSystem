@@ -22,7 +22,7 @@ public class CategoryWithGoalResponse
     public string GoalPeriod { get; set; }
 }
 
-public class CategoryUpdateRequest
+public class CategoryUpdate
 {
     public string Name {get; set;}
     public string Description {get; set;}
