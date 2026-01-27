@@ -81,7 +81,6 @@ public class CategoriesController : ControllerBase
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         category.UserId = userId;
         _context.Categories.Add(category);
-        _
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, category);
     }
