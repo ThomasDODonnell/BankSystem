@@ -33,7 +33,7 @@ public class BankSystemContext: IdentityDbContext<IdentityUser>
 
             // One-to-Many: Category -> CategoryGoals
             entity.HasOne(e => e.Category)
-                .WithMany(c => c.Goals)
+                .WithMany(c => c.CategoryGoals)
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
         });

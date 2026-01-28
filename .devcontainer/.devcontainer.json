@@ -1,0 +1,8 @@
+{
+  "name": "Codespace with MSSQL",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "codespace",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [1433, 5000],
+  "postCreateCommand": "dotnet restore"
+}
