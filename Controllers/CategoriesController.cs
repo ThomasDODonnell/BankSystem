@@ -139,6 +139,9 @@ public class CategoriesController : ControllerBase
 
         return NoContent();
     }
+    // update category and transaction at the same time
+    // [HttpPut]
+    // public async Task<ActionResult> PutCategoryWithTransaction(int id, [FromBody] CategoryUpdate updateDto)
 
     // Delete
     [HttpDelete("{id}")]
