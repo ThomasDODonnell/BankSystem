@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(BankSystemContext))]
-    [Migration("20260128163035_InitalCreate")]
+    [Migration("20260128165141_InitalCreate")]
     partial class InitalCreate
     {
         /// <inheritdoc />
@@ -512,7 +512,7 @@ namespace BankSystem.Migrations
                     b.HasOne("BankSystem.API.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")

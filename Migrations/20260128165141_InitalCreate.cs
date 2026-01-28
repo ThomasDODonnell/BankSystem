@@ -263,7 +263,7 @@ namespace BankSystem.Migrations
                         column: x => x.CategoryId,
                         principalTable: "categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
