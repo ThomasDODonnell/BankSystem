@@ -1,6 +1,7 @@
 using BankSystem.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -27,22 +28,27 @@ builder.Services.AddCors(options =>
     });
 });
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 1. Basic configuration
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
-
-app.MapGroup("/auth").MapIdentityApi<IdentityUser>();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// 2. Security Pipeline (ORDER IS CRITICAL)
+app.UseCors();           // CORS should usually come first to handle preflight OPTIONS requests
+app.UseAuthentication(); // <--- ADD THIS HERE
+app.UseAuthorization();  // Authorization stays after Authentication
 
-app.UseCors();
-
+// 3. Endpoints (Move these to the bottom)
+app.MapGroup("/auth")
+   .MapIdentityApi<IdentityUser>()
+   .AllowAnonymous();
 app.MapControllers();
 
 app.Run();

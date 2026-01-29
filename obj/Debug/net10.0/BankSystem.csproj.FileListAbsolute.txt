@@ -214,3 +214,4 @@
 /workspaces/BankSystem/obj/Debug/net10.0/BankSystem.pdb
 /workspaces/BankSystem/obj/Debug/net10.0/BankSystem.genruntimeconfig.cache
 /workspaces/BankSystem/obj/Debug/net10.0/ref/BankSystem.dll
+/workspaces/BankSystem/bin/Debug/net10.0/Scalar.AspNetCore.dll

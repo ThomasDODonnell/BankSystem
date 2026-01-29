@@ -1106,6 +1106,18 @@
           "lib/net6.0/Newtonsoft.Json.dll": {}
         }
       },
+      "Scalar.AspNetCore/1.2.76": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "System.ClientModel/1.5.1": {
         "type": "package",
         "dependencies": {
@@ -3072,6 +3084,21 @@
         "packageIcon.png"
       ]
     },
+    "Scalar.AspNetCore/1.2.76": {
+      "sha512": "90ZxLgqZhkEDN8aGbY/QQTCHKVPcVkomCKFRZsh+yGICMqrpjEYmnVHRb3IUssyDd1kO3P6BnGUNRliz4fTe6g==",
+      "type": "package",
+      "path": "scalar.aspnetcore/1.2.76",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "scalar.aspnetcore.1.2.76.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "System.ClientModel/1.5.1": {
       "sha512": "k2jKSO0X45IqhVOT9iQB4xralNN9foRQsRvXBTyRpAVxyzCJlG895T9qYrQWbcJ6OQXxOouJQ37x5nZH5XKK+A==",
       "type": "package",
@@ -3504,7 +3531,8 @@
       "Microsoft.AspNetCore.OpenApi >= 10.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.1",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.1",
-      "Microsoft.EntityFrameworkCore.Tools >= 10.0.1"
+      "Microsoft.EntityFrameworkCore.Tools >= 10.0.1",
+      "Scalar.AspNetCore >= 1.2.*"
     ]
   },
   "packageFolders": {
@@ -3577,6 +3605,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[10.0.1, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[1.2.*, )"
           }
         },
         "imports": [
