@@ -8,8 +8,7 @@ public class Transaction
 {
         [Key]
         public int Id {get; set;}
-        [Required]
-        public string UserId {get; set;}
+        public string? UserId {get; set;}
         [Required]
         public DateTime Date {get; set;}
         [MaxLength(255)]
@@ -29,8 +28,8 @@ public class Transaction
         public DateTime CreatedAt {get; set;}
         public DateTime UpdatedAt {get; set;}
         // Navigation Properties
-        public ICollection<TransactionSplit> Splits {get; set;}
-        public TransactionCategory TransactionCategory {get; set;}
+        public ICollection<TransactionSplit> Splits {get; set;} = new List<TransactionSplit>();
+        public TransactionCategory? TransactionCategory {get; set;}
         [ForeignKey("UserId")]
-        public virtual IdentityUser User {get; set;}
+        public virtual IdentityUser? User {get; set;}
 }

@@ -1,6 +1,7 @@
 <h1>The backend classes to implement</h1>
 
 - Budgeting App Database Schema: https://dbdiagram.io/d/BankSystem-6957ea9739fa3db27bf983cb
+- API Explorer: scalar/v1
 
 -- Categories table for organizing transactions
 CREATE TABLE categories (

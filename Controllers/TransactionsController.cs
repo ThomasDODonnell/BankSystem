@@ -102,6 +102,7 @@ public class TransactionsController : ControllerBase
         transaction.UserId = userId;
         _context.Transactions.Add(transaction);
         await _context.SaveChangesAsync();
+        await _context.Entry(transaction).Reference(t => t.User).LoadAsync();
         return CreatedAtAction(nameof(GetTransaction), new {id = transaction.Id}, transaction);
     }
 
