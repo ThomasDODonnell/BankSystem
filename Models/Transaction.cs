@@ -23,7 +23,6 @@ public class Transaction
         [Column(TypeName ="decimal(10, 2)")]
         public decimal Amount {get; set;}
         [Required]
-        [MaxLength(10)]
         public TransactionType Type {get; set;}
         public bool IsSplit {get; set;} = false;
         public string? Notes {get; set;}
