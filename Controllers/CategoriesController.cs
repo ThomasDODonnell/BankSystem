@@ -75,7 +75,7 @@ public class CategoriesController : ControllerBase
         return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, category);
     }
 
-    [HttpPost]
+    [HttpPost("with-goal")]
     public async Task<ActionResult> PostCategoryWithGoal(CategoryWithGoalRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
