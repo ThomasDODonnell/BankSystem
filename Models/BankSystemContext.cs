@@ -8,8 +8,8 @@ public class BankSystemContext: IdentityDbContext<IdentityUser>
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<CategoryGoal> CategoryGoals => Set<CategoryGoal>();
-    public DbSet<TransactionSplit> TranactionSplits => Set<TransactionSplit>();
-    public DbSet<TransactionCategory> TranactionCategories => Set<TransactionCategory>();
+    public DbSet<TransactionSplit> TransactionSplits => Set<TransactionSplit>();
+    public DbSet<TransactionCategory> TransactionCategories => Set<TransactionCategory>();
     public BankSystemContext(DbContextOptions<BankSystemContext> options): base(options)
     {
         

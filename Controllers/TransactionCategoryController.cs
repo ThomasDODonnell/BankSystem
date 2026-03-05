@@ -23,16 +23,16 @@ public class TransactionCategoryController : ControllerBase
     //Put Methods
     //Post Methods
     [HttpPost]
-    public async Task<ActionResult> CategorizeTransaction(TTnsaractionCategoryParametersnsaractionCategoryParameters request)
+    public async Task<ActionResult> CategorizeTransaction(TransactionCategoryQueryParameters queryParameters)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var transactionCategory = new TransactionCategory
         {
-            TransactionId = request.TransactionId,
-            CategoryId = request.TransactionId
+            TransactionId = queryParameters.TransactionId,
+            CategoryId = queryParameters.CategoryId
         };
         _context.TransactionCategories.Add(transactionCategory);
         await _context.SaveChangesAsync();
+        return Ok(transactionCategory);
     }
     //Delete Methods
 }

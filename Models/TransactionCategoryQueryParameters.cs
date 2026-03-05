@@ -1,7 +1,7 @@
-namespace Banksystem.API.Models;
+namespace BankSystem.API.Models;
 
 public class TransactionCategoryQueryParameters
 {
-    int TransactionId {get; set;}
-    int CategoryId {get; set;}
+    public int TransactionId {get; set;}
+    public int CategoryId {get; set;}
 }
