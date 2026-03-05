@@ -25,6 +25,10 @@ public class TransactionCategoryController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CategorizeTransaction(TransactionCategoryQueryParameters queryParameters)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        bool categoryExists = await _context.Categories.AnyAsync(c => c.Id == queryParameters.CategoryId);
+        bool transactionExists = await _context.Transactions.AnyAsync(t => t.Id == queryParameters.TransactionId);
+        if(!categoryExists | !transactionExists){ return NotFound(); }
         var transactionCategory = new TransactionCategory
         {
             TransactionId = queryParameters.TransactionId,
