@@ -63,6 +63,29 @@ public class CategoriesController : ControllerBase
         return Ok(category);
     }
 
+    [HttpGet("with-transactions/{id}")]
+    public async Task<ActionResult> GetCategoryWithTransactions(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        if (category == null)
+        {
+            return NotFound();
+        }
+        List<Transaction> transactions = await _context.Transactions
+            .Where(t => t.TransactionCategory.CategoryId == category.Id && t.Date.Month == DateTime.Now.Month).ToListAsync();
+        decimal sum = transactions.Where(t => t.Type == TransactionType.Expense && t.Date.Month == DateTime.Now.Month).Sum(t => t.Amount);
+
+        CategoryWithTransactionsResponse response = new CategoryWithTransactionsResponse
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Transactions = transactions,
+            MonthlySum = sum
+        };
+        return Ok(response);
+    }
+
 
     // Post
     [HttpPost]

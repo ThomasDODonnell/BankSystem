@@ -22,6 +22,14 @@ public class CategoryWithGoalResponse
     public string GoalPeriod { get; set; }
 }
 
+public class CategoryWithTransactionsResponse
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public List<Transaction> Transactions { get; set; }
+    public decimal MonthlySum {get; set;}
+}
+
 public class CategoryUpdate
 {
     public string Name {get; set;}
