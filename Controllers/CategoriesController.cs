@@ -63,6 +63,7 @@ public class CategoriesController : ControllerBase
         return Ok(category);
     }
 
+    // TODO: TEST THIS NEXT
     [HttpGet("with-transactions/{id}")]
     public async Task<ActionResult> GetCategoryWithTransactions(int id)
     {
@@ -72,8 +73,11 @@ public class CategoriesController : ControllerBase
         {
             return NotFound();
         }
+        // List<Transaction> transactions = await _context.Transactions
+        //     .Where(t => t.TransactionCategory.CategoryId == category.Id && t.Date.Month == DateTime.Now.Month).ToListAsync();
         List<Transaction> transactions = await _context.Transactions
-            .Where(t => t.TransactionCategory.CategoryId == category.Id && t.Date.Month == DateTime.Now.Month).ToListAsync();
+            .Where(t => t.TransactionCategory.CategoryId == category.Id).ToListAsync();
+ 
         decimal sum = transactions.Where(t => t.Type == TransactionType.Expense && t.Date.Month == DateTime.Now.Month).Sum(t => t.Amount);
 
         CategoryWithTransactionsResponse response = new CategoryWithTransactionsResponse
