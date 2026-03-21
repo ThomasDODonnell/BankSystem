@@ -1,2 +1,2 @@
 # BankSystem
-A simple C# budgeting app API to solidify my learning.
+C# Budgeting API because why pay for an app when you can build it yourself.... right?
